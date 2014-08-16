@@ -37,9 +37,6 @@ var server = http.createServer(router);
 console.log("Listening on http://" + ip + ":" + port);
 server.listen(port, ip);
 
-// db.saveMessage("hello", 1, "samsroom", function(data) {
-//   console.log(data);
+// db.saveMessage("hello there", 1, "samsroom", function(data) {
+//   console.log("message was added");
 // });
-
-var from = db.roomid("samsroom");
-console.log(from);

@@ -19,12 +19,10 @@ var mysql = require('mysql');
  * using this module.*/
 
  var dbQuery = function(func, cb) {
-  var called=[];
   dbConnection.query(func, function(err, result) {
     if (err) throw err;
-    called.push(cb(result));
+    cb(result);
   });
-return called[0];
 }
 
 exports.findAllMessages = function(cb){
@@ -45,29 +43,17 @@ exports.saveUser = function(username, cb){
 };
 
 exports.saveMessage = function(message, userid, roomname, cb){
-  // some function to give us r_id from roomname
-  var findRoom = function (roomname) {
-    var sqlQuery = 'SELECT r_id FROM rooms WHERE roomname = "'+ roomname +'";';
-    return dbQuery(sqlQuery, function(data) {
-      return data[0]['r_id'];
-    });
-  };
-  roomid = findRoom(roomname);
-  // console.log(roomid);
+  exports.findRoomID(roomname, function(data) {
+    var sql = 'INSERT INTO messages (msg, u_id, r_id) SELECT "'+ message +'", '+ userid +', '+ data +' FROM users u CROSS JOIN rooms r WHERE u.u_id = '+ userid +' AND r.r_id = '+ data +';';
 
-  var sql = 'INSERT INTO messages (msg, u_id, r_id) SELECT '+ message +', '+ userid +', '+ roomid +' FROM users u CROSS JOIN rooms r WHERE u.u_id = '+ userid +'AND r.r_id = '+ roomid +';';
-
-  dbQuery(sql, cb);
+    console.log("THIS SHOULD BE 1: ", data);
+    dbQuery(sql, cb);
+  });
 };
 
-exports.roomid = function (roomname) {
-  // var sqlQuery = 'SELECT r_id FROM rooms WHERE roomname = '+ roomname +';';
-  var test = 0;
-  var sql = 'SELECT r_id FROM rooms WHERE roomname = \'samsroom\';';
-  return dbQuery(sql, function(data) {
-    console.log('hey there wow okay', data[0]['r_id']);
-    return data[0]['r_id'];
+exports.findRoomID = function (roomname, cb) {
+  var sql = 'SELECT r_id FROM rooms WHERE roomname = "'+ roomname +'";';
+  dbQuery(sql, function(result) {
+    cb(result[0]['r_id']);
   });
-
-  // return test;
 };
