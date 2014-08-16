@@ -37,15 +37,18 @@ CREATE TABLE messages (
 -- FROM messages m
 -- JOIN users u
 -- ON u.u_id = m.userID
--- WHERE u.username = "Mario"
+-- WHERE u.username = username
+-- INSERT INTO messages (msg, username, roomname)
+-- values("message", "mario", "lobby")
+
 
 -- -- function call (users)
--- INSERT INTO messages
--- SELECT new date(), ...., u.id
+-- INSERT INTO messages (msg, u_id, r_id)
+-- SELECT "HI", u_id, r_id --values
 -- FROM users u
 -- CROSS JOIN rooms r
--- where u.username = 'Mario'
--- and r.roomName = 'This room'
+-- where u.u_id = 'userid'
+-- and r.r_id = 'roomid'
 
 
 -- ### Guidelines for creating groups of friends

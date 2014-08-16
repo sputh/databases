@@ -7,6 +7,7 @@ var url = require('url');
 
 var handlers = require('./request-handler');
 var serverHelpers = require('./server-helpers');
+var db = require('./db');
 
 var port = 3000;
 var ip = "127.0.0.1";
@@ -27,7 +28,7 @@ var router = function(req, res) {
       handlers.sendOptionsResponse(req, res);
     }
   } else {
-    handlers.sendResponse(res, '', 404);
+    serverHelpers.sendResponse(res, '', 404);
   }
 };
 
@@ -36,3 +37,9 @@ var server = http.createServer(router);
 console.log("Listening on http://" + ip + ":" + port);
 server.listen(port, ip);
 
+// db.saveMessage("hello", 1, "samsroom", function(data) {
+//   console.log(data);
+// });
+
+var from = db.roomid("samsroom");
+console.log(from);
